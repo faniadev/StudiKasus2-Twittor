@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.810.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwittorAPI", "TwittorAPI\TwittorAPI.csproj", "{1D5B405D-3C4B-47FF-9433-2B6724E2316F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafkaApp", "KafkaApp\KafkaApp.csproj", "{15378CB0-F8FC-422D-BBC4-51DDFB166C7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafkaListening", "KafkaListening\KafkaListening.csproj", "{12B97961-1DBD-4229-BF34-4C2DD65B74B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafkaCreateTopic", "KafkaCreateTopic\KafkaCreateTopic.csproj", "{965E60C5-EE9F-44F4-BAAE-20CB5B4273CA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D5B405D-3C4B-47FF-9433-2B6724E2316F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D5B405D-3C4B-47FF-9433-2B6724E2316F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D5B405D-3C4B-47FF-9433-2B6724E2316F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D5B405D-3C4B-47FF-9433-2B6724E2316F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15378CB0-F8FC-422D-BBC4-51DDFB166C7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15378CB0-F8FC-422D-BBC4-51DDFB166C7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15378CB0-F8FC-422D-BBC4-51DDFB166C7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15378CB0-F8FC-422D-BBC4-51DDFB166C7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12B97961-1DBD-4229-BF34-4C2DD65B74B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12B97961-1DBD-4229-BF34-4C2DD65B74B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12B97961-1DBD-4229-BF34-4C2DD65B74B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12B97961-1DBD-4229-BF34-4C2DD65B74B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{965E60C5-EE9F-44F4-BAAE-20CB5B4273CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{965E60C5-EE9F-44F4-BAAE-20CB5B4273CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{965E60C5-EE9F-44F4-BAAE-20CB5B4273CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{965E60C5-EE9F-44F4-BAAE-20CB5B4273CA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7A41C1C2-5FBD-4DC0-B1F1-43DF641BCD1E}
+	EndGlobalSection
+EndGlobal
