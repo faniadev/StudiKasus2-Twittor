@@ -13,6 +13,10 @@
     <None Remove="HotChocolate" />
     <None Remove="HotChocolate.AspNetCore" />
     <None Remove="GraphQL\" />
+    <None Remove="Kafka\" />
+    <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <None Remove="HotChocolate.AspNetCore.Authorization" />
+    <None Remove="BCrypt.Net-Next" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Confluent.Kafka" Version="1.8.2" />
@@ -25,8 +29,12 @@
     </PackageReference>
     <PackageReference Include="HotChocolate" Version="12.4.1" />
     <PackageReference Include="HotChocolate.AspNetCore" Version="12.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.13" />
+    <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="12.4.1" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="GraphQL\" />
+    <Folder Include="Kafka\" />
   </ItemGroup>
 </Project>
