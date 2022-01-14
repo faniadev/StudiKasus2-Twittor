@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using HotChocolate;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -11,7 +12,7 @@ namespace TwittorAPI.GraphQL
 {
     public class Query
     {
-        public IQueryable<Twittor> GetTwittors(
+        public async Task<IQueryable<Twittor>> GetTwittors(
             [Service] TwittorContext context,
             [Service] IOptions<KafkaSettings> kafkaSettings)
         {
@@ -22,13 +23,13 @@ namespace TwittorAPI.GraphQL
             return context.Twittors;
         }
 
-        public IQueryable<UserData> GetUsers([Service] ProductQLContext context) =>
-            context.Users.Select(p => new UserData()
-            {
-                Id = p.Id,
-                FullName = p.FullName,
-                Email = p.Email,
-                Username = p.Username
-            });
+        //public IQueryable<UserData> GetUsers([Service] ProductQLContext context) =>
+        //    context.Users.Select(p => new UserData()
+        //    {
+        //        Id = p.Id,
+        //        FullName = p.FullName,
+        //        Email = p.Email,
+        //        Username = p.Username
+        //    });
     }
 }

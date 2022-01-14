@@ -146,7 +146,7 @@ namespace TwittorAPI.GraphQL
             return await Task.FromResult(new UserToken(null, null, Message: "Username or password was invalid"));
         }
 
-        public async Task<TransactionStatus> EditProfileAsync(
+        public async Task<TransactionStatus> UpdateProfileAsync(
             EditProfileInput input,
             [Service] TwittorContext context,
             [Service] IOptions<KafkaSettings> kafkaSettings)
@@ -159,7 +159,7 @@ namespace TwittorAPI.GraphQL
                 profile.Username = input.Username;
                 profile.Password = BCrypt.Net.BCrypt.HashPassword(input.Password);
 
-                var key = "edit-profile-" + DateTime.Now.ToString();
+                var key = "update-profile-" + DateTime.Now.ToString();
                 var val = JObject.FromObject(profile).ToString(Formatting.None);
                 var result = await KafkaHelper.SendMessage(kafkaSettings.Value, "editprofile", key, val);
                 await KafkaHelper.SendMessage(kafkaSettings.Value, "logging", key, val);

@@ -43,27 +43,27 @@ namespace TwittorAPI
             services
                 .AddGraphQLServer()
                 .AddQueryType<Query>()
-                .AddMutationType<Mutation>()
-                .AddAuthorization();
+                .AddMutationType<Mutation>();
+                //.AddAuthorization();
 
             services.AddControllers();
 
             services.Configure<TokenSettings>(Configuration.GetSection("TokenSettings"));
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidIssuer = Configuration.GetSection("TokenSettings").GetValue<string>("Issuer"),
-                        ValidateIssuer = true,
-                        ValidAudience = Configuration.GetSection("TokenSettings").GetValue<string>("Audience"),
-                        ValidateAudience = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("TokenSettings").GetValue<string>("Key"))),
-                        ValidateIssuerSigningKey = true
-                    };
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //    .AddJwtBearer(options =>
+            //    {
+            //        options.TokenValidationParameters = new TokenValidationParameters
+            //        {
+            //            ValidIssuer = Configuration.GetSection("TokenSettings").GetValue<string>("Issuer"),
+            //            ValidateIssuer = true,
+            //            ValidAudience = Configuration.GetSection("TokenSettings").GetValue<string>("Audience"),
+            //            ValidateAudience = true,
+            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("TokenSettings").GetValue<string>("Key"))),
+            //            ValidateIssuerSigningKey = true
+            //        };
 
-                });
+            //    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,6 +82,7 @@ namespace TwittorAPI
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGraphQL();
                 endpoints.MapControllers();
             });
         }
