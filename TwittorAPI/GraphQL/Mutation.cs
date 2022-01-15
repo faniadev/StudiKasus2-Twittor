@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using HotChocolate;
+using HotChocolate.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -17,6 +18,7 @@ namespace TwittorAPI.GraphQL
 {
     public class Mutation
     {
+        [Authorize(Roles = new[] { "MEMBER" })]
         public async Task<TransactionStatus> AddTwittorAsync(
             TwittorInput input,
             [Service] IOptions<KafkaSettings> kafkaSettings)
@@ -41,6 +43,7 @@ namespace TwittorAPI.GraphQL
             return await Task.FromResult(ret);
         }
 
+        [Authorize(Roles = new[] { "MEMBER" })]
         public async Task<TransactionStatus> AddCommentAsync(
             CommentInput input,
             [Service] IOptions<KafkaSettings> kafkaSettings)
@@ -64,6 +67,7 @@ namespace TwittorAPI.GraphQL
             return await Task.FromResult(ret);
         }
 
+        [Authorize(Roles = new[] { "MEMBER", "ADMIN" })]
         public async Task<TransactionStatus> UpdateProfileAsync(
             UpdateProfileInput input,
             [Service] TwittorContext context,
@@ -93,6 +97,7 @@ namespace TwittorAPI.GraphQL
             }
         }
 
+        [Authorize(Roles = new[] { "MEMBER", "ADMIN" })]
         public async Task<TransactionStatus> ChangePasswordAsync(
             ChangePasswordInput input,
             [Service] TwittorContext context,
@@ -118,6 +123,7 @@ namespace TwittorAPI.GraphQL
             }
         }
 
+        [Authorize(Roles = new[] { "MEMBER" })]
         public async Task<TransactionStatus> DeleteTwittorAsync(
             int Id,
             [Service] TwittorContext context,
@@ -207,8 +213,9 @@ namespace TwittorAPI.GraphQL
 
                 var claims = new List<Claim>();
                 claims.Add(new Claim(ClaimTypes.Name, user.Username));
+                var userRoles = context.UserRoles.Where(o => o.UserId == user.Id).ToList();
 
-                foreach (var userRole in user.UserRoles)
+                foreach (var userRole in userRoles)
                 {
                     var role = context.Roles.Where(o => o.Id == userRole.RoleId).FirstOrDefault();
                     if (role != null)
@@ -266,6 +273,7 @@ namespace TwittorAPI.GraphQL
             return await Task.FromResult(ret);
         }
 
+        [Authorize(Roles = new[] { "ADMIN" })]
         public async Task<TransactionStatus> AddRoleToUserAsync(
             UserRoleInput input,
             [Service] TwittorContext context,
