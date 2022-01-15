@@ -39,7 +39,7 @@ namespace TwittorAPI.GraphQL
             [Service] TwittorContext context,
             [Service] IOptions<KafkaSettings> kafkaSettings)  
             {
-            var key = "GetUsers-" + DateTime.Now.ToString();
+            var key = "getusers-" + DateTime.Now.ToString();
             var val = JObject.FromObject(new { Message = "GraphQL Query GetUsers" }).ToString(Formatting.None);
             await KafkaHelper.SendMessage(kafkaSettings.Value, "logging", key, val);
             return context.Users.Select(p => new UserData()

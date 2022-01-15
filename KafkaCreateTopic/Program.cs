@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Confluent.Kafka;
-using Confluent.Kafka.Admin;
 using System.Net;
 using System.Threading.Tasks;
+using Confluent.Kafka;
+using Confluent.Kafka.Admin;
 
-
-namespace KafkaCreateTopics
+namespace KafkaCreateTopic
 {
-    internal class Program
+    class Program
     {
         static async Task<int> Main(string[] args)
         {

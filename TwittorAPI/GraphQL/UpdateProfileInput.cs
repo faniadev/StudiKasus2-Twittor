@@ -1,7 +1,7 @@
 ﻿using System;
 namespace TwittorAPI.GraphQL
 {
-    public record EditProfileInput
+    public record UpdateProfileInput
     (
         int? Id,
         string FullName,
