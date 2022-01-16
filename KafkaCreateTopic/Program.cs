@@ -22,7 +22,7 @@ namespace KafkaCreateTopic
             topics.Add("user");
             topics.Add("role");
             topics.Add("lockuser");
-            //topics.Add("changerole");
+            topics.Add("changeuserrole");
             topics.Add("userrole");
             topics.Add("twittor");
             topics.Add("comment");

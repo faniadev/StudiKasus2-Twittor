@@ -69,11 +69,11 @@ namespace KafkaApp
                                 UserRole lockuser = JsonConvert.DeserializeObject<UserRole>(cr.Message.Value);
                                 dbcontext.UserRoles.Remove(lockuser);
                             }
-                            // if (cr.Topic == "changerole")
-                            // {
-                            //     UserRole changerole = JsonConvert.DeserializeObject<UserRole>(cr.Message.Value);
-                            //     dbcontext.UserRoles.Update(changerole);
-                            // }
+                            if (cr.Topic == "changeuserrole")
+                            {
+                                UserRole changeuserrole = JsonConvert.DeserializeObject<UserRole>(cr.Message.Value);
+                                dbcontext.UserRoles.Update(changeuserrole);
+                            }
                             if (cr.Topic == "twittor")
                             {
                                 Twittor twittor = JsonConvert.DeserializeObject<Twittor>(cr.Message.Value);

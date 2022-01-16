@@ -268,7 +268,7 @@ namespace TwittorAPI.GraphQL
         }
 
         [Authorize(Roles = new[] { "ADMIN" })]
-        public async Task<TransactionStatus> AddRoleToUserAsync(
+        public async Task<TransactionStatus> AddUserRoleAsync(
             UserRoleInput input,
             [Service] TwittorContext context,
             [Service] IOptions<KafkaSettings> kafkaSettings)
@@ -328,28 +328,28 @@ namespace TwittorAPI.GraphQL
             }
         }
 
-        // [Authorize(Roles = new[] { "ADMIN" })]
-        // public async Task<TransactionStatus> ChangeUserRoleAsync(
-        //     UserRoleInput input,
-        //     [Service] TwittorContext context,
-        //     [Service] IOptions<KafkaSettings> kafkaSettings)
-        // {
-        //     var userRole = context.UserRoles.Where(o => o.UserId == input.UserId).FirstOrDefault();
-        //     if (userRole != null)
-        //     {
-        //         userRole.RoleId = input.RoleId;
-        //         var key = "change-role-" + DateTime.Now.ToString();
-        //         var val = JObject.FromObject(userRole).ToString(Formatting.None);
-        //         var result = await KafkaHelper.SendMessage(kafkaSettings.Value, "changerole", key, val);
-        //         await KafkaHelper.SendMessage(kafkaSettings.Value, "logging", key, val);
+        [Authorize(Roles = new[] { "ADMIN" })]
+        public async Task<TransactionStatus> ChangeUserRoleAsync(
+            UserRoleInput input,
+            [Service] TwittorContext context,
+            [Service] IOptions<KafkaSettings> kafkaSettings)
+        {
+            var userRole = context.UserRoles.Where(o => o.UserId == input.UserId).FirstOrDefault();
+            if (userRole != null)
+            {
+                userRole.RoleId = input.RoleId;
+                var key = "change-user-role-" + DateTime.Now.ToString();
+                var val = JObject.FromObject(userRole).ToString(Formatting.None);
+                var result = await KafkaHelper.SendMessage(kafkaSettings.Value, "changeuserrole", key, val);
+                await KafkaHelper.SendMessage(kafkaSettings.Value, "logging", key, val);
 
-        //         var ret = new TransactionStatus(result, "");
-        //         if (!result)
-        //             ret = new TransactionStatus(result, "Failed to submit data");
-        //         return await Task.FromResult(ret);
-        //     };
-        //     return new TransactionStatus(false, "User doesn't exist");
-        // }
+                var ret = new TransactionStatus(result, "");
+                if (!result)
+                    ret = new TransactionStatus(result, "Failed to submit data");
+                return await Task.FromResult(ret);
+            };
+            return new TransactionStatus(false, "User doesn't exist");
+        }
 
 
 
