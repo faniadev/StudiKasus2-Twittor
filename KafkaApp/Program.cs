@@ -36,7 +36,7 @@ namespace KafkaApp
             using (var consumer = new ConsumerBuilder<string, string>(Serverconfig).Build())
             {
                 Console.WriteLine("Connected");
-                var topics = new string[] { "user", "role", "userrole", "lockuser", "changerole", "twittor", "comment", "deletetweet", "changepassword", "updateprofile" };
+                var topics = new string[] { "user", "role", "userrole", "lockuser", "changeuserrole", "twittor", "comment", "deletetweet", "changepassword", "updateprofile" };
                 consumer.Subscribe(topics);
 
                 Console.WriteLine("Waiting messages....");
