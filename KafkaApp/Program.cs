@@ -36,7 +36,7 @@ namespace KafkaApp
             using (var consumer = new ConsumerBuilder<string, string>(Serverconfig).Build())
             {
                 Console.WriteLine("Connected");
-                var topics = new string[] { "user", "role", "userrole", "twittor", "comment", "delete", "changepassword", "updateprofile", };
+                var topics = new string[] { "user", "role", "userrole", "lockuser", "changerole", "twittor", "comment", "deletetweet", "changepassword", "updateprofile" };
                 consumer.Subscribe(topics);
 
                 Console.WriteLine("Waiting messages....");
@@ -64,6 +64,16 @@ namespace KafkaApp
                                 UserRole userrole = JsonConvert.DeserializeObject<UserRole>(cr.Message.Value);
                                 dbcontext.UserRoles.Add(userrole);
                             }
+                            if (cr.Topic == "lockuser")
+                            {
+                                UserRole lockuser = JsonConvert.DeserializeObject<UserRole>(cr.Message.Value);
+                                dbcontext.UserRoles.Remove(lockuser);
+                            }
+                            // if (cr.Topic == "changerole")
+                            // {
+                            //     UserRole changerole = JsonConvert.DeserializeObject<UserRole>(cr.Message.Value);
+                            //     dbcontext.UserRoles.Update(changerole);
+                            // }
                             if (cr.Topic == "twittor")
                             {
                                 Twittor twittor = JsonConvert.DeserializeObject<Twittor>(cr.Message.Value);
@@ -74,7 +84,7 @@ namespace KafkaApp
                                 Comment comment = JsonConvert.DeserializeObject<Comment>(cr.Message.Value);
                                 dbcontext.Comments.Add(comment);
                             }
-                            if (cr.Topic == "delete")
+                            if (cr.Topic == "deletetweet")
                             {
                                 Twittor twittor = JsonConvert.DeserializeObject<Twittor>(cr.Message.Value);
                                 dbcontext.Twittors.Remove(twittor);

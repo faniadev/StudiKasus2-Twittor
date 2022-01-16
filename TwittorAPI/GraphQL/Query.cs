@@ -24,17 +24,6 @@ namespace TwittorAPI.GraphQL
             return context.Twittors;
         }
 
-        // public async Task<IQueryable<Twittor>> GetTwittorsById(
-        //     [Service] TwittorContext context,
-        //     [Service] IOptions<KafkaSettings> kafkaSettings)
-        // {
-        //     var key = "GetTwittors-" + DateTime.Now.ToString();
-        //     var val = JObject.FromObject(new { Message = "GraphQL Query GetTwittors" }).ToString(Formatting.None);
-
-        //     await KafkaHelper.SendMessage(kafkaSettings.Value, "logging", key, val);
-        //     return context.Twittors;
-        // }
-
         public async Task<IQueryable<UserData>> GetUsers(
             [Service] TwittorContext context,
             [Service] IOptions<KafkaSettings> kafkaSettings)  

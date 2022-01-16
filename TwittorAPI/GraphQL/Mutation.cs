@@ -83,7 +83,7 @@ namespace TwittorAPI.GraphQL
 
                 var key = "update-profile-" + DateTime.Now.ToString();
                 var val = JObject.FromObject(profile).ToString(Formatting.None);
-                var result = await KafkaHelper.SendMessage(kafkaSettings.Value, "editprofile", key, val);
+                var result = await KafkaHelper.SendMessage(kafkaSettings.Value, "updateprofile", key, val);
                 await KafkaHelper.SendMessage(kafkaSettings.Value, "logging", key, val);
 
                 var ret = new TransactionStatus(result, "");
@@ -103,12 +103,12 @@ namespace TwittorAPI.GraphQL
             [Service] TwittorContext context,
             [Service] IOptions<KafkaSettings> kafkaSettings)
         {
-            var akun = context.Users.Where(o => o.Username == input.Username).FirstOrDefault();
-            if (akun != null)
+            var pass = context.Users.Where(o => o.Username == input.Username).FirstOrDefault();
+            if (pass != null)
             {
-                akun.Password = BCrypt.Net.BCrypt.HashPassword(input.Password);
+                pass.Password = BCrypt.Net.BCrypt.HashPassword(input.Password);
                 var key = "change-pass-" + DateTime.Now.ToString();
-                var val = JObject.FromObject(akun).ToString(Formatting.None);
+                var val = JObject.FromObject(pass).ToString(Formatting.None);
                 var result = await KafkaHelper.SendMessage(kafkaSettings.Value, "changepassword", key, val);
                 await KafkaHelper.SendMessage(kafkaSettings.Value, "logging", key, val);
 
@@ -125,21 +125,27 @@ namespace TwittorAPI.GraphQL
 
         [Authorize(Roles = new[] { "MEMBER" })]
         public async Task<TransactionStatus> DeleteTwittorAsync(
-            int Id,
+            int userId,
             [Service] TwittorContext context,
             [Service] IOptions<KafkaSettings> kafkaSettings)
         {
-            var tweet = context.Twittors.Where(o => o.UserId == Id).ToList();
-            if (tweet != null)
+            var twets = context.Twittors.Where(o => o.UserId == userId).ToList();
+            bool check = false;
+            if (twets != null)
             {
+                foreach (var twet in twets)
+                {
                 var key = "delete-tweet-" + DateTime.Now.ToString();
-                var val = JObject.FromObject(tweet).ToString(Formatting.None);
-                var result = await KafkaHelper.SendMessage(kafkaSettings.Value, "delete tweet", key, val);
+                var val = JObject.FromObject(twet).ToString(Formatting.None);
+                var result = await KafkaHelper.SendMessage(kafkaSettings.Value, "deletetweet", key, val);
                 await KafkaHelper.SendMessage(kafkaSettings.Value, "logging", key, val);
                 var ret = new TransactionStatus(result, "");
-                if (!result)
-                    ret = new TransactionStatus(result, "Failed to submit data");
-                return await Task.FromResult(ret);
+                check = true;
+                
+                }
+                if (!check)
+                    return new TransactionStatus(false, "Failed to submit data");
+                    return await Task.FromResult(new TransactionStatus(true,""));
             }
             else
             {
@@ -179,19 +185,7 @@ namespace TwittorAPI.GraphQL
 
 
             return await Task.FromResult(ret);
-
-            // var ret = context.Users.Add(newUser);
-            // await context.SaveChangesAsync();
-
-            // return await Task.FromResult(new User { 
-            //     Id=newUser.Id,
-            //     Username=newUser.Username,
-            //     Email =newUser.Email,
-            //     FullName=newUser.FullName
-            // });
-
-
-            
+     
         }
 
         public async Task<UserToken> LoginAsync(
@@ -246,7 +240,7 @@ namespace TwittorAPI.GraphQL
             return await Task.FromResult(new UserToken(null, null, Message: "Username or password was invalid"));
         }
 
-         public async Task<TransactionStatus> AddRoleAsync(
+        public async Task<TransactionStatus> AddRoleAsync(
             string roleName,
             [Service] TwittorContext context,
             [Service] IOptions<KafkaSettings> kafkaSettings)
@@ -303,6 +297,65 @@ namespace TwittorAPI.GraphQL
 
             return await Task.FromResult(ret);
         }
+
+        [Authorize(Roles = new[] { "ADMIN" })]
+        public async Task<TransactionStatus> LockUserAsync(
+            int userId,
+            [Service] TwittorContext context,
+            [Service] IOptions<KafkaSettings> kafkaSettings)
+        {
+            var userRoles = context.UserRoles.Where(o => o.UserId == userId).ToList();
+            bool check = false;
+            if (userRoles != null)
+            {
+                foreach (var userRole in userRoles)
+                {
+                    var key = "lock-user-" + DateTime.Now.ToString();
+                    var val = JObject.FromObject(userRole).ToString(Formatting.None);
+                    var result = await KafkaHelper.SendMessage(kafkaSettings.Value, "lockuser", key, val);
+                    await KafkaHelper.SendMessage(kafkaSettings.Value, "logging", key, val);
+                    var ret = new TransactionStatus(result, "");
+                    check = true;
+                };
+
+                if (!check)
+                    return new TransactionStatus(false, "Failed to submit data");
+                return await Task.FromResult(new TransactionStatus(true, ""));
+            }
+            else
+            {
+                return new TransactionStatus(false, "User doesnt have any role yet");
+            }
+        }
+
+        // [Authorize(Roles = new[] { "ADMIN" })]
+        // public async Task<TransactionStatus> ChangeUserRoleAsync(
+        //     UserRoleInput input,
+        //     [Service] TwittorContext context,
+        //     [Service] IOptions<KafkaSettings> kafkaSettings)
+        // {
+        //     var userRole = context.UserRoles.Where(o => o.UserId == input.UserId).FirstOrDefault();
+        //     if (userRole != null)
+        //     {
+        //         userRole.RoleId = input.RoleId;
+        //         var key = "change-role-" + DateTime.Now.ToString();
+        //         var val = JObject.FromObject(userRole).ToString(Formatting.None);
+        //         var result = await KafkaHelper.SendMessage(kafkaSettings.Value, "changerole", key, val);
+        //         await KafkaHelper.SendMessage(kafkaSettings.Value, "logging", key, val);
+
+        //         var ret = new TransactionStatus(result, "");
+        //         if (!result)
+        //             ret = new TransactionStatus(result, "Failed to submit data");
+        //         return await Task.FromResult(ret);
+        //     };
+        //     return new TransactionStatus(false, "User doesn't exist");
+        // }
+
+
+
+
+
+        
 
 
         
